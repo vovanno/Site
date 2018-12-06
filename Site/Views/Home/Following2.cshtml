@@ -1,0 +1,81 @@
+﻿@model Site.Models.Order
+<div class="fon">
+
+
+    <div class="container-fluid">
+        <div class="cardForm">
+            <h2>Детали поездки</h2>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="leftBox">
+
+                        @using (Ajax.BeginForm("DriverInfo", new AjaxOptions { UpdateTargetId = "result" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+
+                            @Html.HiddenFor(m => m.DriverId, htmlAttributes: new { })
+
+
+                            <div class="part">
+                                @Html.LabelFor(model => model.Type, htmlAttributes: new { })
+                                <div class="microvalue">
+                                    @Html.DropDownListFor(m => m.Type, ViewBag.Type as SelectList, "-- Please select a category --")
+                                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="part">
+                                @Html.LabelFor(model => model.Mass, htmlAttributes: new { })
+                                <div class="microvalue">
+                                    @Html.TextBoxFor(m => m.Mass)
+                                    @Html.ValidationMessageFor(model => model.Mass, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="part">
+                                @Html.LabelFor(model => model.From, htmlAttributes: new { })
+                                <div class="microvalue">
+                                    @Html.DropDownListFor(m => m.From, ViewBag.From as SelectList, "-- Please select a category --")
+                                    @Html.ValidationMessageFor(model => model.From, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="part">
+                                @Html.LabelFor(model => model.To, htmlAttributes: new { })
+                                <div class="microvalue">
+                                    @Html.DropDownListFor(m => m.To, ViewBag.From as SelectList, "-- Please select a category --")
+                                    @Html.ValidationMessageFor(model => model.To, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="part">
+                                @Html.LabelFor(model => model.Date, htmlAttributes: new { })
+                                <div class="microvalue">
+                                    <input type="date" name="calendar" id="datepicker" required>
+                                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+
+                            <div>
+                                <input type="submit" id="findDriver" value="Найти водителя" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div id="result" class="col-md-9">
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+

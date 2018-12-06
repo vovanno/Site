@@ -1,0 +1,141 @@
+﻿@model  IEnumerable<Site.Models.Driver>
+
+
+    @*<div class="driverForms">*@
+            @foreach (Site.Models.Driver d in Model)
+            {
+
+                <div class="driverForms">
+                    @using (Html.BeginForm("AcceptOrder", "Home", FormMethod.Post))
+                    {
+                        <div class="driverInfo">
+                            <div hidden>
+                                <p id="type">@ViewBag.Order.Type</p>
+                                <p id="mass">@ViewBag.Order.Mass</p>
+                                <p id="from">@ViewBag.Order.From</p>
+                                <p id="to">@ViewBag.Order.To</p>
+                                <p id="date">@ViewBag.Order.Date</p>
+                            </div>
+                            <img src="~/Images/Peka.jpg" />
+                            <div class="manInfo">
+                                <p id="choosenDriver">@Html.Hidden("Id", d.Id)</p>
+                                <p>@Html.Label("ФИО: ")@d.FullName</p>
+                                <p>@Html.Label("Телефон: ")@d.Phone</p>
+                                <p>@Html.Label("Стаж: ")@d.Stage</p>
+                                <p>@Html.Label("Дислокация: ")@d.Location</p>
+                            </div>
+                        </div>
+                        <div class="carInfo">
+                            <p class="categoryName">Машина</p>
+                            <img src="~/Images/Car.jpg" />
+                            <div class="discribeCar">
+                                <p>@Html.Label("Марка: ")@d.CarRef.Name</p>
+                                <p>@Html.Label("Грузоподъемность: ")@d.CarRef.Weight</p>
+                                <p>@Html.Label("Год: ")@d.CarRef.Year</p>
+                                <p>@Html.Label("Габариты: ")@d.CarRef.Gabarites</p>
+                            </div>
+
+                        </div>
+                        <input type="submit" value="Выбрать" class="selectDriver" />
+                    }
+                </div>
+            }
+
+    @*</div>*@
+
+
+@*@foreach (Site.Models.Driver d in Model)
+{
+
+    <div class="driverForms">
+        @using (Html.BeginForm("AcceptOrder", "Home", FormMethod.Post))
+        {
+            <div class="driverInfo">
+                <div hidden>
+                    <p id="type">@ViewBag.Order.Type</p>
+                    <p id="mass">@ViewBag.Order.Mass</p>
+                    <p id="from">@ViewBag.Order.From</p>
+                    <p id="to">@ViewBag.Order.To</p>
+                    <p id="date">@ViewBag.Order.Date</p>
+                </div>
+                <img src="~/Images/Peka.jpg" />
+                <div>
+                    <p id="choosenDriver">@Html.Hidden("Id", d.Id)</p>
+                    <p>@Html.Label("ФИО: ")@d.FullName</p>
+                    <p>@Html.Label("Телефон: ")@d.Phone</p>
+                    <p>@Html.Label("Стаж: ")@d.Stage</p>
+                    <p>@Html.Label("Дислокация: ")@d.Location</p>
+                </div>
+            </div>
+            <div class="carInfo">
+                <p class="categoryName">Машина</p>
+                <img src="~/Images/Car.jpg" />
+                <div class="discribeCar">
+                    <p>@Html.Label("Марка: ")@d.CarRef.Name</p>
+                    <p>@Html.Label("Грузоподъемность: ")@d.CarRef.Weight</p>
+                    <p>@Html.Label("Год: ")@d.CarRef.Year</p>
+                    <p>@Html.Label("Габариты: ")@d.CarRef.Gabarites</p>
+                </div>
+
+            </div>
+            <input type="submit" value="Выбрать" class="selectDriver" />
+        }
+    </div>
+}*@
+
+<div id="response">
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.selectDriver').on('click', function (e) {
+            e.preventDefault();
+            var $type1 = $(this).parent().eq(0).children().children().eq(0).children().eq(0).html();
+            var $mass = $(this).parent().eq(0).children().children().eq(0).children().eq(1).html();
+            var $from = $(this).parent().eq(0).children().children().eq(0).children().eq(2).html();
+            var $to = $(this).parent().eq(0).children().children().eq(0).children().eq(3).html();
+            var $date = $('#datepicker').val();
+            var $drivId = $(this).parent().eq(0).children().children().eq(2).children().eq(0).children().eq(0).val();
+            
+            $.ajax({
+                type: 'POST',
+                url: '/Home/AcceptOrder',
+                dataType: "json",
+                traditional: true,
+                data: { Type: $type1, Mass: $mass, From: $from, To: $to, Date: $date, DriverId: $drivId },
+                success: function (data) {
+                    alert("Спасибо за заявку, ваш заказ принят, мы вам перезвоним\n" + data.Type + " " + data.Mass + " " + data.From + " " + data.To + " " + data.Date + " " + data.FIO.FullName);
+                },
+                //error: alert("nope")
+            });
+        });
+    });
+
+
+</script>
+
+
+
+
+
+
+
+@*<script>
+        $(document).ready(function () {
+
+
+            //$('.selectDriver').on('click', function (e) {
+
+            //    var i = $(this).parent().eq(0).children().eq(0).children().eq(1).children().eq(0).children().eq(0).val();
+            //    console.log(i);
+            //});
+            $('.driverInfo').on('click', function () {
+                alert('heasd');
+                var i = $(this).html();
+                console.log(i);
+            });
+
+        });
+    </script>*@
+
